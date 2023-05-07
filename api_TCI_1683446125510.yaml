@@ -1,0 +1,47 @@
+swagger: '2.0'
+info:
+  version: '1.0'
+  title: api_TCI
+  x-lastModified: '05 May 2023 10:04:36 am (India Standard Time)'
+paths:
+  /postosnow:
+    post:
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: Success response
+        '201':
+          description: INCIDENT GETS CREATED
+          schema:
+            $ref: '#/definitions/INCIDENT'
+      parameters:
+        - name: snow_instance
+          in: query
+          description: url of instance
+          required: true
+          type: string
+          format: ''
+          default: >-
+            https://dev140329.service-now.com/nav_to.do?uri=incident.do?sys_id=1c741bd70b2322007518478d83673af3%26sysparm_view=text_search
+        - name: host
+          in: header
+          description: host of SNOW inst
+          required: true
+          type: string
+          format: ''
+          default: dev140329.service-now.com
+        - name: body
+          in: body
+          description: BW error to SNOW incident
+          schema:
+            $ref: '#/definitions/error'
+      operationId: postPostosnow
+      consumes:
+        - application/json
+      summary: BW ERROR TO SNOW INCIDENT
+definitions:
+  error:
+    error: EOF prolog
+  INCIDENT:
+    INCIDENT NO: ' '
