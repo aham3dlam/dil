@@ -1,0 +1,24 @@
+#!/bin/bash
+
+# Variables
+IMAGE_NAME="my-image"
+IMAGE_TAG="latest"
+QUAY_IO_USERNAME="padidomun"
+QUAY_IO_REPOSITORY="drepo"
+
+# Build the Docker image
+docker build -t $IMAGE_NAME:$IMAGE_TAG .
+
+# Tag the image with Quay.io repository information
+QUAY_IO_IMAGE="$QUAY_IO_USERNAME/$QUAY_IO_REPOSITORY:$IMAGE_TAG"
+docker tag $IMAGE_NAME:$IMAGE_TAG quay.io/$QUAY_IO_IMAGE
+
+# Log in to Quay.io
+docker login -u $QUAY_IO_USERNAME quay.io
+
+# Push the image to Quay.io
+docker push quay.io/$QUAY_IO_IMAGE
+
+# Clean up
+docker rmi $IMAGE_NAME:$IMAGE_TAG
+docker rmi quay.io/$QUAY_IO_IMAGE
