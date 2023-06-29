@@ -1,0 +1,27 @@
+# Use an official Python runtime as the base image
+FROM python:3.9
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the YAML file into the container
+COPY api.yaml .
+
+# Install Swagger Codegen CLI
+RUN apt-get update && apt-get install -y curl
+RUN curl https://raw.githubusercontent.com/swagger-api/swagger-codegen/master/modules/swagger-codegen-cli/target/swagger-codegen-cli.jar -o swagger-codegen-cli.jar
+
+# Generate server stubs from YAML using Swagger Codegen
+RUN java -jar swagger-codegen-cli.jar generate -i api.yaml -l python-flask -o generated-server
+
+# Change the working directory to the generated server stubs
+WORKDIR /app/generated-server
+
+# Install Python dependencies
+RUN pip install -r requirements.txt
+
+# Expose the server port (replace 8000 with your desired port)
+EXPOSE 8000
+
+# Start the server
+CMD ["python", "app.py"]
